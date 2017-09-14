@@ -16,27 +16,32 @@ Along with the <code>slides.md</code> you can have hand-made slides,
 overriding the vimdeck generated ones. These hand-made files must be put
 in the same directory as <code>slides.md</code> as
 <code>hm_slideNNN.md</code>. Example:
+
     hm_slide013.md
     hm_slide042.md
 
 ### Last file
-<code>etc/last_slide.md</code> appended to the presentation as the last file.
+<code>etc/last_slide.md</code> is appended to the presentation as the last file (<code>slide999.md</code>).
 
-### Vimdeck generated script.vim modification
+### Modification of vimdeck generated script.vim
 The files <code>etc/script_pre.vim</code> and <code>etc/script_post.vim</code>
 are prepended/appended respectively to the vimdeck generated
 <code>presentation/script.vim</code> file.
 
 ### Markdown
-Put <code>etc/markdown.vim</code> <code>~/.vim/after/ftplugin</code>.
+Put <code>etc/markdown.vim</code> filetype plugin file under <code>~/.vim/after/ftplugin</code> directory.
 
 ## Notes
 ### PDF
-To create a PDF file use the screenshot images:
+To create a PDF file out of the presentation, save each slide as
+screenshots, then use these images for creating the PDF:
+
     convert $(find -maxdepth 1 -type f -name '*.png' | sort -n | paste -sd\ ) presentation.pdf
 
 ### Screen
-For saving screenshots of the presentation (to create a pdf) disable the
+For saving screenshots of the presentation (to create a pdf file) disable the
 hardstatus of your GNU screen:
+
     hardstatus ignore
+
 and put your presentation in full screen (f.i. using F11).
