@@ -33,8 +33,8 @@ Put <code>etc/markdown.vim</code> filetype plugin file under <code>~/.vim/after/
 
 ## Notes
 ### PDF
-To create a PDF file out of the presentation, save each slide as
-screenshots, then use these images for creating the PDF:
+To create a PDF file out of the presentation, save each slide as a
+screenshot, then use these images for creating the PDF:
 
     convert $(find -maxdepth 1 -type f -name '*.png' | sort -n | paste -sd\ ) presentation.pdf
 
