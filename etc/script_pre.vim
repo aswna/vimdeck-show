@@ -1,3 +1,7 @@
+" --------------
+" script_pre.vim
+" --------------
+
 " Hide statuslines, line numbers, etc.
 set laststatus=0
 set nolist
