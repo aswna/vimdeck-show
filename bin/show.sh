@@ -3,12 +3,13 @@
 set -e
 set -u
 
-# some box drawing characters
+# some box drawing characters (see the full list at the end of this file)
 # ┌─┬─┐ ╭─┬─╮
 # ├─┼─┤ ├─┼─┤
 # └─┴─┘ ╰─┴─╯
-# some dots and circles
+# some dots, circles, and boxes
 # ·･•⚫⬤● ⚬⚪￮○ ◌
+# ░ █ ▄ ▀
 
 FILEPATH=$(readlink -f "${BASH_SOURCE[0]}")
 SCRIPT_DIR=$(cd "$(dirname "${FILEPATH}")" && pwd)
@@ -29,8 +30,13 @@ parse_command_line_arguments() {
         print_help
         exit 1
     fi
-    PRESENTATION_BASE_DIR="${1}"
-    cd "${PRESENTATION_BASE_DIR}"
+
+    if [ ! -d "${1}" ]; then
+        echo "Directory ${1} does not exist!" >&2
+        exit 1
+    fi
+    cd "${1}"
+    PRESENTATION_BASE_DIR=$(pwd)
 }
 
 print_help() {
@@ -65,22 +71,25 @@ replace_hand_made_files() {
         fi
     done
 
-    local last_slide="${REAL_BASE_DIR}/etc/last_slide.md"
-    if [ -r "${last_slide}" ]; then
-        cp "${last_slide}" presentation/slide999.md
+    local last_slide="last_slide.md"
+    if [ ! -r "${last_slide}" ]; then
+        last_slide="${REAL_BASE_DIR}/etc/${last_slide}"
     fi
+    cp "${last_slide}" presentation/slide999.md
 }
 
 customize_vim_script() {
     local tmp_vim_script=/tmp/script.vim
 
     cat "${REAL_BASE_DIR}"/etc/script_pre.vim > ${tmp_vim_script}
+    cat presentation/script.vim >> "${tmp_vim_script}"
+    cat "${REAL_BASE_DIR}"/etc/script_post.vim >> ${tmp_vim_script}
+
     local custom_vim_script="${PRESENTATION_BASE_DIR}"/script.vim
     if [ -r "${custom_vim_script}" ]; then
         cat "${custom_vim_script}" >> "${tmp_vim_script}"
     fi
-    cat presentation/script.vim >> "${tmp_vim_script}"
-    cat "${REAL_BASE_DIR}"/etc/script_post.vim >> ${tmp_vim_script}
+
     mv "${tmp_vim_script}" presentation/script.vim
 }
 
@@ -89,3 +98,22 @@ open_it_up() {
 }
 
 main ${*}
+
+# https://en.wikipedia.org/wiki/Box-drawing_character#Unicode
+#            0 1 2 3 4 5 6 7 8 9 A B C D E F
+#
+#    U+250x  ─ ━ │ ┃ ┄ ┅ ┆ ┇ ┈ ┉ ┊ ┋ ┌ ┍ ┎ ┏
+#
+#    U+251x  ┐ ┑ ┒ ┓ └ ┕ ┖ ┗ ┘ ┙ ┚ ┛ ├ ┝ ┞ ┟
+#
+#    U+252x  ┠ ┡ ┢ ┣ ┤ ┥ ┦ ┧ ┨ ┩ ┪ ┫ ┬ ┭ ┮ ┯
+#
+#    U+253x  ┰ ┱ ┲ ┳ ┴ ┵ ┶ ┷ ┸ ┹ ┺ ┻ ┼ ┽ ┾ ┿
+#
+#    U+254x  ╀ ╁ ╂ ╃ ╄ ╅ ╆ ╇ ╈ ╉ ╊ ╋ ╌ ╍ ╎ ╏
+#
+#    U+255x  ═ ║ ╒ ╓ ╔ ╕ ╖ ╗ ╘ ╙ ╚ ╛ ╜ ╝ ╞ ╟
+#
+#    U+256x  ╠ ╡ ╢ ╣ ╤ ╥ ╦ ╧ ╨ ╩ ╪ ╫ ╬ ╭ ╮ ╯
+#
+#    U+257x  ╰ ╱ ╲ ╳ ╴ ╵ ╶ ╷ ╸ ╹ ╺ ╻ ╼ ╽ ╾ ╿
