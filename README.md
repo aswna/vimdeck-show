@@ -7,7 +7,9 @@ Save your presentation as <code>slides.md</code> and put it into an
 empty directory <code>dir</code>.
 
 Start your presentation using <code>bin/show.sh</code> found in this
-repository. Example:
+repository.
+
+Example:
 
     show.sh dir
 
