@@ -82,11 +82,30 @@ customize_vim_script() {
     local tmp_vim_script=/tmp/script.vim
 
     cat "${REAL_BASE_DIR}"/etc/script_pre.vim > ${tmp_vim_script}
+    echo >> ${tmp_vim_script}
+
+    cat >> "${tmp_vim_script}" <<EOF
+" ----------------------------
+" vimdeck generated script.vim
+" ----------------------------
+
+EOF
+
     cat presentation/script.vim >> "${tmp_vim_script}"
+    echo >> ${tmp_vim_script}
+
     cat "${REAL_BASE_DIR}"/etc/script_post.vim >> ${tmp_vim_script}
+    echo >> ${tmp_vim_script}
 
     local custom_vim_script="${PRESENTATION_BASE_DIR}"/script.vim
     if [ -r "${custom_vim_script}" ]; then
+        cat >> "${tmp_vim_script}" <<EOF
+" -----------------
+" custom script.vim
+" -----------------
+
+EOF
+
         cat "${custom_vim_script}" >> "${tmp_vim_script}"
     fi
 
